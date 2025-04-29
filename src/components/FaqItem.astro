@@ -1,0 +1,96 @@
+---
+interface Props {
+  question: string;
+  answer: string;
+}
+
+const { question, answer } = Astro.props;
+---
+
+<div class="faq-item">
+  <button class="faq-question">
+    <span>{question}</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </button>
+  <div class="faq-answer">
+    <p>{answer}</p>
+  </div>
+</div>
+
+<style>
+  .faq-item {
+    border-bottom: 1px solid rgba(var(--text-dark), 0.1);
+  }
+  
+  .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 1.25rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: rgb(var(--text-dark));
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  
+  .faq-question:hover {
+    color: rgb(var(--primary));
+  }
+  
+  .faq-question .icon {
+    transition: transform 0.3s ease;
+  }
+  
+  .faq-question.active .icon {
+    transform: rotate(180deg);
+  }
+  
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+  
+  .faq-answer.active {
+    max-height: 500px;
+    padding-bottom: 1.25rem;
+  }
+  
+  .faq-answer p {
+    color: rgba(var(--text-dark), 0.8);
+    line-height: 1.6;
+  }
+</style>
+
+<script>
+  // Add client-side interactivity
+  document.addEventListener('DOMContentLoaded', () => {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach(question => {
+      question.addEventListener('click', () => {
+        const answer = question.nextElementSibling;
+        const isActive = question.classList.contains('active');
+        
+        // Close all FAQs
+        faqQuestions.forEach(q => {
+          q.classList.remove('active');
+          q.nextElementSibling.classList.remove('active');
+        });
+        
+        // Toggle current FAQ
+        if (!isActive) {
+          question.classList.add('active');
+          answer.classList.add('active');
+        }
+      });
+    });
+  });
+</script>
